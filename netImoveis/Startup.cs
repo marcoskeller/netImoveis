@@ -1,17 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using netImoveis.Configuration;
-using netImoveis.Data.Repository;
-using netImoveis.Extensions;
-using netImoveis.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace netImoveis
 {
@@ -27,11 +19,8 @@ namespace netImoveis
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var applicationConfig = Configuration.LoadConfiguration();
-
             services.AddControllersWithViews();
-            RepositoryConfig.ConfigureServices(services, applicationConfig);
-            UseCaseConfig.ConfigureServices(services);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

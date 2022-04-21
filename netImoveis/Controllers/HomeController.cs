@@ -1,25 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using netImoveis.Models;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using _Imoveis = netImoveis.Models.Imoveis;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace netImoveis.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IImoveisUseCase _imoveisUseCase;
+        HttpClient client = new HttpClient();
+
+        //private readonly IImoveisUseCase _imoveisUseCase;
 
 
-        public HomeController(IImoveisUseCase imoveisUseCase, ILogger<HomeController> logger)
-        {
-            _imoveisUseCase = imoveisUseCase;
-            _logger = logger;
+        //public HomeController(IImoveisUseCase imoveisUseCase, ILogger<HomeController> logger)
+        //{
+        //    _imoveisUseCase = imoveisUseCase;
+        //    _logger = logger;
 
-        }
+        //}
 
         //public HomeController(IImoveisUseCase imoveisUseCase)
         //{
@@ -31,22 +37,13 @@ namespace netImoveis.Controllers
             return View();
         }
 
-        //public IActionResult Privacy()
-        //{
-        //    return View();
-        //}
 
         public IActionResult SobreNos()
         {
             return View();
         }
 
-        //[HttpGet]
-        //public async  IActionResult BuscarImoveis()
-        //{
-        //    return View();
-        //}
-
+ 
 
         [HttpGet]
         [Route("imoveis")]
@@ -63,9 +60,28 @@ namespace netImoveis.Controllers
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(ErrorViewModel))]
         public async Task<IActionResult> ListaImoveis()
         {
-            var response = await _imoveisUseCase.Execute();
-            return ((IActionResult)response);
+            string url = "https://6260672292df0bc0f343f117.mockapi.io/api/teste/imoveis";
+            var response = await client.GetStringAsync(url);
+            var model = new ExibicaoImoveisViewModel();
+
+            try
+            {             
+                var imoveis = JsonConvert.DeserializeObject<List<dynamic>>(response);
+                
+                if (imoveis != null)
+                {
+                    model.ListaImoveis = imoveis;
+                }
+                                 
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return View(model);
         }
+    
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
