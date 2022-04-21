@@ -1,0 +1,44 @@
+﻿@model netImoveis.Models.UsuarioLogin
+
+@{
+    ViewData["Title"] = "Exibicao de Imoveis";
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-md-12">
+        <section>
+            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="get">
+                <br><br>
+                <h4>Escolha o que atende ao seu estilo.</h4>
+                <hr />
+
+                <vc:Summary></vc:Summary>
+
+                <div class="form-group">
+                    <label asp-for="Id"></label>
+                    <input asp-for="Id" class="form-control" />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TipoImovel"></label>
+                    <input type="password" asp-for="TipoImovel" class="form-control" />
+                    <span asp-validation-for="TipoImovel" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </div>
+                <div class="form-group">
+                    <p>
+                        <a asp-action="Registro" asp-controller="Identidade">Criar uma conta</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
