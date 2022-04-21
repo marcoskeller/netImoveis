@@ -7,3 +7,21 @@
     <p>Learn about <a href="ExibicaoImoveis">Conheça nossos imóveis</a></p>
 </div>
 
+@model netImoveis.Models.ExibicaoImoveisViewModel
+
+
+<div>
+    @if (Model.ListaImoveis != null && Model.ListaImoveis.Count() > 0)
+    {
+    <table>
+        @foreach (var prod in Model.ListaImoveis)
+        {
+            <br>
+            <tr>
+                <td>@Html.Raw(prod)</td>
+            </tr>
+        }
+
+    </table>
+    }
+</div>

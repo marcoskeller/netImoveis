@@ -32,13 +32,38 @@ namespace netImoveis.Controllers
         //    _imoveisUseCase = imoveisUseCase;
         //}
 
-        public IActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
+
+
+        public async Task<IActionResult> IndexAsync()
         {
-            return View();
+            string url = "https://6260672292df0bc0f343f117.mockapi.io/api/teste/imoveis";
+            var response = await client.GetStringAsync(url);
+            var model = new ExibicaoImoveisViewModel();
+
+            try
+            {
+                var imoveis = JsonConvert.DeserializeObject<List<dynamic>>(response);
+
+                if (imoveis != null)
+                {
+                    model.ListaImoveis = imoveis;
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return View(model);
+            
         }
 
-
-        public IActionResult SobreNos()
+        public async Task<IActionResult> SobreNosAsync()
         {
             return View();
         }
